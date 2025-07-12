@@ -2,9 +2,11 @@ CQRS SERVICES
 Spring Boot + MySQL + MongoDB + Kafka + Docker
 
 Overview
+
 This project implements a microservice-based backend system using the CQRS (Command Query Responsibility Segregation) pattern. It features separate models for write (command) and read (query) operations. The write side persists data into MySQL and publishes events through Apache Kafka. The read side listens to these events and stores the read model in MongoDB for optimized query performance. Docker Compose is used to simplify local development and infrastructure setup.
 
 Features
+
 Separation of write (commands) and read (queries)
 MySQL as the write-side persistent store
 MongoDB as the read-side optimized view
@@ -16,6 +18,7 @@ Swagger UI for API documentation and testing
 Docker Compose for infrastructure orchestration
 
 Technologies Used
+
 Java 17
 Spring Boot 3
 Spring Data JPA
@@ -29,12 +32,15 @@ Docker and Docker Compose
 Maven
 
 Project Structure
+
 POST /api/commands/orders - Creates a new order (writes to MySQL)
 GET /api/queries/orders/{id} - Retrieves an order by ID (reads from MongoDB)
 
 Getting Started
 
+
 Prerequisites
+
 Java 17 or higher
 Maven
 Docker and Docker Compose
