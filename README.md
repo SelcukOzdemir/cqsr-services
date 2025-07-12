@@ -2,18 +2,17 @@ CQRS SERVICES
 Spring Boot + MySQL + MongoDB + Kafka + Docker
 
 Overview
-This project demonstrates a CQRS (Command Query Responsibility Segregation) architecture using Spring Boot. The command side persists data to MySQL, while the query side serves data from MongoDB. Apache Kafka is used as the communication backbone between write and read sides, enabling eventual consistency. The environment is containerized using Docker Compose, and the APIs are documented and testable via Swagger UI.
+This project implements a microservice-based backend system using the CQRS (Command Query Responsibility Segregation) pattern. It features separate models for write (command) and read (query) operations. The write side persists data into MySQL and publishes events through Apache Kafka. The read side listens to these events and stores the read model in MongoDB for optimized query performance. Docker Compose is used to simplify local development and infrastructure setup.
 
 Features
-Create orders via command endpoints
-Read orders via query endpoints
-Event-driven communication with Apache Kafka
-Write-side persistence using MySQL
-Read-side projection using MongoDB
-Separation of concerns between command and query
-UUID-based order identifiers
-Spring Boot modular service structure
-Swagger UI API documentation
+Separation of write (commands) and read (queries)
+MySQL as the write-side persistent store
+MongoDB as the read-side optimized view
+Apache Kafka for asynchronous event propagation
+Event-driven communication between services
+UUID-based order identity management
+Spring Boot modular architecture
+Swagger UI for API documentation and testing
 Docker Compose for infrastructure orchestration
 
 Technologies Used
@@ -24,14 +23,14 @@ Spring Data MongoDB
 Apache Kafka
 MySQL
 MongoDB
-Lombok
 Springdoc OpenAPI (Swagger)
+Lombok
 Docker and Docker Compose
 Maven
 
 Project Structure
-POST /api/commands/orders Creates a new order (writes to MySQL)
-GET /api/queries/orders/{id} Retrieves an order by ID (reads from MongoDB)
+POST /api/commands/orders - Creates a new order (writes to MySQL)
+GET /api/queries/orders/{id} - Retrieves an order by ID (reads from MongoDB)
 
 Getting Started
 
@@ -44,9 +43,9 @@ Clone the repository
 git clone https://github.com/your-username/cqrs-order-service.git
 cd cqrs-order-service
 
-Start Kafka, MySQL, and MongoDB using Docker Compose
+Set up infrastructure with Docker Compose
 
-docker-compose.yml example:
+docker-compose.yml:
 
 services:
 mysql:
@@ -82,6 +81,7 @@ Run:
 docker-compose up -d
 
 Configure application.yml or application.properties
+
 spring.datasource.url=jdbc:mysql://localhost:3306/cqrs_orders
 spring.datasource.username=root
 spring.datasource.password=root
@@ -100,43 +100,28 @@ API Endpoints
 Create Order
 POST /api/commands/orders
 
-Request:
+Request body:
 {
 "customerName": "John Doe",
-"amount": 2500
+"amount": 5000
 }
 
 Get Order by ID
 GET /api/queries/orders/{orderId}
 
-Response:
+Sample response:
 {
-"orderId": "f3a1e456-bc7a-487e-9f15-5c7c2d3decc9",
+"orderId": "b3c4d001-4e9e-4f84-bdc4-7f42614f8201",
 "customerName": "John Doe",
-"amount": 2500,
+"amount": 5000,
 "status": "CREATED",
-"createdAt": "2025-07-12T13:47:41.000Z"
+"createdAt": "2025-07-12T15:20:11.123Z"
 }
 
-Testing via Swagger UI
-Access Swagger UI to explore and test endpoints:
-http://localhost:8080/swagger-ui.html
+How To Run And Test Application with Dockerfile (Optional)
+docker build -t cqrs-order-service .
+docker run -p 8080:8080 --network=host cqrs-order-service
 
-Secure and stateless architecture with full command/query separation
-Kafka ensures eventual consistency between write and read models
-MongoDB serves as a fast read model optimized for queries
-MySQL serves as the source of truth for all command operations
-
-References
-Spring Boot
-https://spring.io/projects/spring-boot
-Apache Kafka
-https://kafka.apache.org
-Spring Data MongoDB
-https://spring.io/projects/spring-data-mongodb
-Springdoc OpenAPI
-https://springdoc.org
-Docker Compose
-https://docs.docker.com/compose
-CQRS Pattern
-https://martinfowler.com/bliki/CQRS.html
+How To Run And Test Application with docker-compose.yml (Optional)
+docker-compose up --build
+Ensure that MySQL, Kafka, MongoDB, and Zookeeper containers are running correctly.
